@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 class KafkaMessageProducer {
 
     @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private KafkaTemplate<String, Object> kafkaTemplate;
 
     public void sendMessage(String topic, String message) {
         System.out.println("Email microservice sent message: " + message);
