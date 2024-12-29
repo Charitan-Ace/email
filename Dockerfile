@@ -2,13 +2,12 @@
 FROM maven:3.9-amazoncorretto-21-alpine AS build
 WORKDIR /tmp/app
 
-# create and copy maven settings, including repository & github credentials env settings
-RUN mkdir -p /root/.m2 && mkdir /root/.m2/repository
-COPY settings.xml /root/.m2
+# copy outside cache
+COPY settings.xml /
 
 # download and cache dependencies
 COPY ./pom.xml /tmp/app
-RUN --mount=type=cache,target=/root/.m2 mvn dependency:go-offline
+RUN --mount=type=cache,target=/root/.m2 cp /settings.xml /root/.m2 && mvn dependency:go-offline
 
 # build the app
 COPY . /tmp/app
