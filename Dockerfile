@@ -7,16 +7,18 @@ COPY settings.xml /
 
 # download and cache dependencies
 COPY ./pom.xml /tmp/app
-RUN --mount=type=cache,target=/root/.m2 cp /settings.xml /root/.m2 && mvn dependency:go-offline
+RUN --mount=type=secret,id=GITHUB_USERNAME,env=GITHUB_USERNAME,required=true \
+    --mount=type=secret,id=GITHUB_TOKEN,env=GITHUB_TOKEN,required=true \
+    --mount=type=cache,target=/root/.m2 \
+    cp /settings.xml /root/.m2 && \
+    mvn dependency:go-offline
 
 # build the app
 COPY . /tmp/app
 
 # token are mount as Docker secret mounts, see: https://docs.docker.com/reference/dockerfile/#run---mounttypesecret
 # application following nixpacks build command, see: https://nixpacks.com/docs/providers/java
-RUN --mount=type=secret,id=GITHUB_USERNAME,env=GITHUB_USERNAME,required=true \
-    --mount=type=secret,id=GITHUB_TOKEN,env=GITHUB_TOKEN,required=true \
-    --mount=type=cache,target=/root/.m2 \
+RUN     --mount=type=cache,target=/root/.m2 \
     mvn -DoutputFile=target/mvn-dependency-list.log -B -DskipTests install
 
 # use layertools for build cache
