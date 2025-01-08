@@ -1,6 +1,7 @@
 package ace.charitan.email.external.consumer;
 
 
+import ace.charitan.common.dto.donation.SendDonationNotificationDto;
 import ace.charitan.email.external.service.ExternalEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -11,9 +12,9 @@ class KafkaMessageConsumer {
     @Autowired
     private ExternalEmailService service;
 
-    @KafkaListener(topics = "email-test", groupId = "email")
-    public void listen(String message) {
-        System.out.println("Email microservice received message: " + message);
+    @KafkaListener(topics = "donation-email", groupId = "email")
+    public void listen(SendDonationNotificationDto dto) {
+        service.sendEmail("thienphucdoantran@gmail.com", "lol", "lol");
     }
 
 }

@@ -17,7 +17,6 @@ class EmailServiceImpl implements ExternalEmailService, InternalEmailService {
         MimeMessage message = emailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, false);
-            helper.setFrom("hoverspritemailnoreply@gmail.com");
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(text, true);
@@ -26,4 +25,8 @@ class EmailServiceImpl implements ExternalEmailService, InternalEmailService {
             System.out.print(e.getMessage());
         }
     }
+
+
+
+
 }
