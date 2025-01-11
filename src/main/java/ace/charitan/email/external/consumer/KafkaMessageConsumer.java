@@ -40,11 +40,11 @@ class KafkaMessageConsumer {
 
     @KafkaListener(topics = "email.project.halt.charity")
     public void listen(EmailProjectHaltCharityDto dto) {
-        service.sendEmail(dto.recipient(), dto.subject(), dto.body());
+        service.sendEmailByUserId(dto.recipient(), dto.subject(), dto.body());
     }
 
     @KafkaListener(topics = "email.project.halt.donor")
     public void listen(EmailProjectHaltDonorDto dto) {
-        service.sendEmail(dto.recipient(), dto.subject(), dto.body());
+        service.sendEmailByUserId(dto.recipient(), dto.subject(), dto.body());
     }
 }
