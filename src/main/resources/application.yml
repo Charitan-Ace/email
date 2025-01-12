@@ -18,16 +18,16 @@ spring:
           trusted:
             packages: "ace.charitan.*"
   mail:
-    host: ${MAIL_HOST:smtp.mailgun.org}
-    port: ${MAIL_PORT:587}
+    host: ${MAIL_HOST:127.0.0.1}
+    port: ${MAIL_PORT:2500}
     username: ${MAIL_USERNAME}
     password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
-          auth: true
+          auth: ${MAIL_AUTH:false}
           starttls:
-            enable: true
+            enable: ${MAIL_STARTTLS:false}
 server:
   port: 0
 eureka:
