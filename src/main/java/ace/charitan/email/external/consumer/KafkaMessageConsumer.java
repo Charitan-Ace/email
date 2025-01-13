@@ -7,6 +7,7 @@ import ace.charitan.common.dto.email.payment.EmailPaymentHaltedProjectCancelSubs
 import ace.charitan.common.dto.email.project.EmailProjectApproveDto;
 import ace.charitan.common.dto.email.project.EmailProjectHaltCharityDto;
 import ace.charitan.common.dto.email.project.EmailProjectHaltDonorDto;
+import ace.charitan.common.dto.email.subscription.EmailNewProjectSubscription.EmailNewProjectSubscriptionRequestDto;
 import ace.charitan.email.external.service.ExternalEmailService;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -53,5 +54,12 @@ class KafkaMessageConsumer {
     @KafkaListener(topics = "email.subscription.cancel")
     public void listen(EmailPaymentHaltedProjectCancelSubscriptionEmailDto dto) {
         service.sendEmailByUserId(dto.recipient(), dto.subject(), dto.body());
+    }
+
+    @KafkaListener(topics = "subscription-email-new-project")
+    public void listen(EmailNewProjectSubscriptionRequestDto dto) {
+        for (String donorId : dto.getDonorIdList()) {
+            service.sendEmailByUserId(donorId, "Email notification for New Project", "A new project of interest has been created." + dto.getProject().getTitle());
+        }
     }
 }
