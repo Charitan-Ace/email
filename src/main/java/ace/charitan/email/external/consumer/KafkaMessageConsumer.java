@@ -1,8 +1,8 @@
 package ace.charitan.email.external.consumer;
 
-import ace.charitan.common.dto.donation.SendDonationNotificationDto;
 import ace.charitan.common.dto.email.auth.EmailAuthCreationDto;
 import ace.charitan.common.dto.email.auth.EmailAuthVerificationDto;
+import ace.charitan.common.dto.email.donation.EmailDonationCreationDto;
 import ace.charitan.common.dto.email.project.EmailProjectApproveDto;
 import ace.charitan.common.dto.email.project.EmailProjectHaltCharityDto;
 import ace.charitan.common.dto.email.project.EmailProjectHaltDonorDto;
@@ -18,10 +18,6 @@ class KafkaMessageConsumer {
         this.service = service;
     }
 
-    @KafkaListener(topics = "donation-email")
-    public void listen(SendDonationNotificationDto dto) {
-        service.sendEmail("thienphucdoantran@gmail.com", "lol", "lol");
-    }
 
     @KafkaListener(topics = "email.auth.creation")
     public void listen(EmailAuthCreationDto dto) {
@@ -45,6 +41,11 @@ class KafkaMessageConsumer {
 
     @KafkaListener(topics = "email.project.halt.donor")
     public void listen(EmailProjectHaltDonorDto dto) {
+        service.sendEmailByUserId(dto.recipient(), dto.subject(), dto.body());
+    }
+
+    @KafkaListener(topics = "email.donation.create")
+    public void listen(EmailDonationCreationDto dto) {
         service.sendEmailByUserId(dto.recipient(), dto.subject(), dto.body());
     }
 }
